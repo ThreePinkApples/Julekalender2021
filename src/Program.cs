@@ -1,6 +1,6 @@
-﻿using Julekalender2021.Knowit;
+﻿using AdventCalendar2021.Knowit;
 
-namespace Julekalender2021;
+namespace AdventCalendar2021;
 
 class Program
 {

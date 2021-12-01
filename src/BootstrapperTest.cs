@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Julekalender2021;
+namespace AdventCalendar2021;
 public class BootstrapperTest
 {
     public static void Start()
