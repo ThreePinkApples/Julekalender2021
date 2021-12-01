@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Julekalender2021", "Julekalender2021.csproj", "{1640F3CB-1B17-4693-9C66-70D36B85480E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventCalendar2021", "AdventCalendar2021.csproj", "{1640F3CB-1B17-4693-9C66-70D36B85480E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
