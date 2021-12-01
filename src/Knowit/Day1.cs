@@ -1,7 +1,8 @@
-﻿using System.Linq;
-namespace AdventCalendar2021.Knowit;
+﻿namespace AdventCalendar2021.Knowit;
 public class Day1
 {
+    private static readonly int[] NumbersFollowedBySingle = new int[] { 20, 30, 40 };
+
     public static void Run()
     {
         var text = File.ReadAllLines("Knowit\\Data\\tall.txt")[0];
@@ -12,18 +13,12 @@ public class Day1
             var (wordLength, number) = ScanForNumber(index, text);
             index += wordLength;
             if (NumbersFollowedBySingle.Contains(previousNumber) && number < 10)
-            {
                 number += previousNumber;
-            }
             else
-            {
-                // Previous number was not followed by a relevant number
                 sum += previousNumber;
-                previousNumber = 0;
-            }
+
             if (!NumbersFollowedBySingle.Contains(number))
             {
-                Console.WriteLine($"Adding number {number}");
                 sum += number;
                 previousNumber = 0;
             }
@@ -50,7 +45,6 @@ public class Day1
         throw new Exception($"Failed to find number at startIndex {startIndex}");
     }
 
-    private static readonly int[] NumbersFollowedBySingle = new int[] { 20, 30, 40 };
 
     private static int? WordToNumber(string word)
     {
