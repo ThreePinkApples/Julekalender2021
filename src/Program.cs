@@ -6,6 +6,6 @@ class Program
 {
     public static void Main(string[] args)
     {
-        BootstrapperTest.Start();
+        Bootstrapper.Start();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
 namespace AdventCalendar2021;
-public class BootstrapperTest
+public class Bootstrapper
 {
     public static void Start()
     {
@@ -56,7 +56,7 @@ public class BootstrapperTest
 
     private static void Run(string calendar, int day)
     {
-        var t = Type.GetType($"Julekalender2021.{calendar}.Day{day}");
+        var t = Type.GetType($"AdventCalendar2021.{calendar}.Day{day}");
         if (t == null)
         {
             LogError($"Day {day} is not implemeted yet for {calendar}");

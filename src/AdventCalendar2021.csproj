@@ -11,4 +11,10 @@
     <Folder Include="AdventOfCode\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Knowit\Data\tall.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
