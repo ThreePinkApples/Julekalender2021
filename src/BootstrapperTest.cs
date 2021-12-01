@@ -7,7 +7,7 @@ public class BootstrapperTest
     {
         Console.WriteLine("Pick a calendar and day");
 
-        string line;
+        string? line;
         while ((line = Console.ReadLine()) != null)
         {
             try
@@ -32,15 +32,21 @@ public class BootstrapperTest
         }
         catch (FormatException)
         {
-            LogError($"{parts[1]} is not a number. How naughty of you.");
+            LogError($"{parts[1]} is not a number.");
+            return;
+        }
+        if (day < 1 || day > 24)
+        {
+            LogError($"{day} is not a valid christmas calendar day!");
             return;
         }
         switch (calendar)
         {
             case "knowit":
-                Knowit(day);
+                Run("Knowit", day);
                 break;
             case "advent":
+                Run("AdventOfCode", day);
                 break;
             default:
                 LogError("Unknown calendar");
@@ -48,9 +54,14 @@ public class BootstrapperTest
         }
     }
 
-    private static void Knowit(int day)
+    private static void Run(string calendar, int day)
     {
-        var t = Type.GetType($"Julekalender2021.Knowit.Day{day}");
+        var t = Type.GetType($"Julekalender2021.{calendar}.Day{day}");
+        if (t == null)
+        {
+            LogError($"Day {day} is not implemeted yet for {calendar}");
+            return;
+        }
         var method = t.GetMethod("Run", BindingFlags.Static | BindingFlags.Public);
         method.Invoke(null, null);
     }
@@ -63,7 +74,7 @@ public class BootstrapperTest
     private static void LogError(string error, Exception? ex)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(error, ex);
+        Console.WriteLine($"You've been naughty!\n{error}", ex);
         Console.ResetColor();
     }
 }
