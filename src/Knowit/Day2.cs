@@ -13,14 +13,15 @@ public class Day2
             .ToList();
         var radius = 6371;
         // Assuming the north pole vector ¯\_(ツ)_/¯
-        var start = new Vector2(0, 0);
+        var start = new Vector2(90, 90);
         var currentPosition = start;
         var totalDistance = 0f;
         while (cities.Count > 0)
         {
             var nextCity = cities.OrderBy(c => Vector2.Distance(currentPosition, c.Position)).First();
             cities.Remove(nextCity);
-            totalDistance += (Vector2.Distance(currentPosition, nextCity.Position) / 180) * radius;
+            var distance = Vector2.Distance(currentPosition, nextCity.Position);
+            totalDistance += (distance / 180) * radius;
             currentPosition = nextCity.Position;
         }
         // Back to the north pole
