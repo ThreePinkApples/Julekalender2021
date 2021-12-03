@@ -12,67 +12,41 @@ public class Day2
         var cities = File.ReadAllLines("Knowit\\Data\\cities.csv")
             .Select(line => LineToCity(line, regex));
         Vector2Attempt(cities.ToList());
-        Vector3Attempt(cities.ToList());
     }
 
     private static void Vector2Attempt(List<City> cities)
     {
         // Assuming the north pole vector ¯\_(ツ)_/¯
-        var start = new Vector2(90, 90);
-        var currentPosition = start;
+        var northPole = new City("North Pole", 90.0, 90.0);
+        var currentCity = northPole;
         var totalDistance = 0f;
         while (cities.Count > 0)
         {
-            var nextCity = cities.OrderBy(c => Haversine(currentPosition, c.Position2)).First();
+            var nextCity = cities.OrderBy(c => Haversine(currentCity, c)).First();
             cities.Remove(nextCity);
-            var distance = Haversine(currentPosition, nextCity.Position2);
-            // 180 is diameter I guess, so Raidus * 2?
+            var distance = Haversine(currentCity, nextCity);
             totalDistance += (float)distance;
-            currentPosition = nextCity.Position2;
+            currentCity = nextCity;
         }
         // Back to the north pole
-        totalDistance += (float)Haversine(currentPosition, start);
-        currentPosition = start;
-        Console.WriteLine($"Total Vector2 distance {totalDistance}");
+        totalDistance += (float)Haversine(currentCity, northPole);
+        currentCity = northPole;
+        Console.WriteLine($"Total distance {totalDistance}");
     }
 
-    private static void Vector3Attempt(List<City> cities)
+    private static double Haversine(City from, City to)
     {
-        // Assuming the north pole vector ¯\_(ツ)_/¯
-        var start = CoordinatesToVector3(90, 90);
-        var currentPosition = start;
-        var totalDistance = 0f;
-        while (cities.Count > 0)
-        {
-            var nextCity = cities.OrderBy(c => Vector3.Distance(currentPosition, c.Position3)).First();
-            cities.Remove(nextCity);
-            var distance = Vector3.Distance(currentPosition, nextCity.Position3);
-            totalDistance += distance;
-            currentPosition = nextCity.Position3;
-        }
-        // Back to the north pole
-        totalDistance += Vector3.Distance(currentPosition, start);
-        currentPosition = start;
-        Console.WriteLine($"Total Vector3 distance {totalDistance}");
-    }
-
-    private static double Haversine(Vector2 from, Vector2 to)
-    {
-        var latFrom = ToRadians(from.Y);
-        var latTo = ToRadians(to.Y);
-        var longFrom = ToRadians(from.X);
-        var longTo = ToRadians(to.X);
-        var dLat = latTo - latFrom;
-        var dLong = longTo - longFrom;
+        var dLat = to.LatitudeRadians - from.LatitudeRadians;
+        var dLong = to.LongitudeRadians - from.LongitudeRadians;
         var sdLat = Math.Sin(dLat / 2);
         var sdLong = Math.Sin(dLong / 2);
-        var q = sdLat * sdLat + Math.Cos(latFrom) * Math.Cos(latTo) * sdLong * sdLong;
-        var distance = 2 * RadiusEarth * Math.Asin(Math.Sqrt(q));
+        var q = (sdLat * sdLat) + Math.Cos(from.LatitudeRadians) * Math.Cos(to.LatitudeRadians) * (sdLong * sdLong);
+        var distance = 2 * RadiusEarth * Math.Asin(Math.Min(1, Math.Sqrt(q)));
 
         return distance;
     }
 
-    private static double ToRadians(float angle)
+    private static double ToRadians(double angle)
     {
         return (Math.PI / 180) * angle;
     }
@@ -80,42 +54,26 @@ public class Day2
     private static City LineToCity(string line, Regex regex)
     {
         var regexMatch = regex.Match(line);
-        var x = float.Parse(regexMatch.Groups[2].Value.Replace(".", ","));
-        var y = float.Parse(regexMatch.Groups[3].Value.Replace(".", ","));
-        return new City(
-            regexMatch.Groups[1].Value,
-            CoordinatesToVector3(x, y),
-            new(x, y)
-        );
-    }
-
-    public static Vector3 CoordinatesToVector3(float latitude, float longitude)
-    {
-        double latitude_rad = latitude * Math.PI / 180;
-        double longitude_rad = longitude * Math.PI / 180;
-
-        double zPos = RadiusEarth * Math.Cos(latitude_rad) * Math.Cos(longitude_rad);
-        double xPos = -RadiusEarth * Math.Cos(latitude_rad) * Math.Sin(longitude_rad);
-        double yPos = RadiusEarth * Math.Sin(latitude_rad);
-
-        return new Vector3((float)xPos, (float)yPos, (float)zPos);
+        var x = double.Parse(regexMatch.Groups[2].Value.Replace(".", ","));
+        var y = double.Parse(regexMatch.Groups[3].Value.Replace(".", ","));
+        return new City(regexMatch.Groups[1].Value, x, y);
     }
 
     internal class City
     {
         public string Name { get; set; }
-        public Vector3 Position3 { get; set; }
-        public Vector2 Position2 { get; set; }
-        public float Longitude { get; set; }
-        public float Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double LongitudeRadians { get; set; }
+        public double Latitude { get; set; }
+        public double LatitudeRadians { get; set; }
 
-        public City(string name, Vector3 position3, Vector2 position2)
+        public City(string name, double longitude, double latitude)
         {
             Name = name;
-            Position3 = position3;
-            Position2 = position2;
-            Longitude = position2.X;
-            Latitude = position2.Y;
+            Longitude = longitude;
+            Latitude = latitude;
+            LongitudeRadians = ToRadians(longitude);
+            LatitudeRadians = ToRadians(latitude);
         }
     }
 }
