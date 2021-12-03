@@ -10,6 +10,12 @@ public class Day3
     public static void Run()
     {
         var lines = File.ReadAllLines("AdventOfCode\\Data\\Day3Input.txt");
+        Part1(lines);
+        Part2(lines);
+    }
+
+    private static void Part1(string[] lines)
+    {
         List<int[]> bitCounters = new();
         for (int i = 0; i < lines.Length; i++)
         {
@@ -21,12 +27,6 @@ public class Day3
                 bitCounters[j][index]++;
             }
         }
-        Part1(bitCounters);
-        Part2(lines, bitCounters);
-    }
-
-    private static void Part1(List<int[]> bitCounters)
-    {
         var gamma = "";
         var epsilon = "";
         foreach (var bitCounter in bitCounters)
@@ -48,8 +48,51 @@ public class Day3
         Console.WriteLine($"AdventOfCode Day 3 Part 1 Result: {powerConsumption}");
     }
 
-    public static void Part2(string[] lines, List<int[]> bitCounters)
+    public static void Part2(string[] lines)
     {
+        var oxygen = "";
+        var co2 = "";
 
+        for (int index = 0; index < lines[0].Count(); index++)
+        {
+            var oxygenBitCounter = new int[] { 0, 0 };
+            var co2BitCounter = new int[] { 0, 0 };
+            var filteredOxygenLines = lines.Where(l => l.StartsWith(oxygen));
+            if (filteredOxygenLines.Count() > 1)
+            {
+                foreach (var line in filteredOxygenLines)
+                {
+                    oxygenBitCounter[(int)char.GetNumericValue(line[index])]++;
+                }
+                if (oxygenBitCounter[0] > oxygenBitCounter[1])
+                    oxygen += '0';
+                else
+                    oxygen += '1';
+            }
+            else
+            {
+                oxygen = filteredOxygenLines.First();
+            }
+            var filteredCO2Lines = lines.Where(l => l.StartsWith(co2));
+            if (filteredCO2Lines.Count() > 1)
+            {
+                foreach (var line in filteredCO2Lines)
+                {
+                    co2BitCounter[(int)char.GetNumericValue(line[index])]++;
+                }
+                if (co2BitCounter[1] < co2BitCounter[0])
+                    co2 += '1';
+                else
+                    co2 += '0';
+            }
+            else
+            {
+                co2 = filteredCO2Lines.First();
+            }
+        }
+        var oxygenRating = Convert.ToInt32(oxygen, 2);
+        var co2Rating = Convert.ToInt32(co2, 2);
+        var lifeSupportRating = oxygenRating * co2Rating;
+        Console.WriteLine($"AdventOfCode Day 3 Part 2 Result: {lifeSupportRating}");
     }
 }
