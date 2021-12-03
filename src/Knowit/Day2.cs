@@ -19,17 +19,17 @@ public class Day2
         // Assuming the north pole vector ¯\_(ツ)_/¯
         var northPole = new City("North Pole", 90.0, 90.0);
         var currentCity = northPole;
-        var totalDistance = 0f;
+        var totalDistance = 0.0;
         while (cities.Count > 0)
         {
             var nextCity = cities.OrderBy(c => Haversine(currentCity, c)).First();
             cities.Remove(nextCity);
             var distance = Haversine(currentCity, nextCity);
-            totalDistance += (float)distance;
+            totalDistance += distance;
             currentCity = nextCity;
         }
         // Back to the north pole
-        totalDistance += (float)Haversine(currentCity, northPole);
+        totalDistance += Haversine(currentCity, northPole);
         currentCity = northPole;
         Console.WriteLine($"Total distance {totalDistance}");
     }
