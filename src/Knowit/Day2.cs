@@ -58,12 +58,23 @@ public class Day2
 
     private static double Haversine(Vector2 from, Vector2 to)
     {
-        var sdlat = Math.Sin((to.Y - from.Y) / 2);
-        var sdlon = Math.Sin((to.X - from.X) / 2);
-        var q = sdlat * sdlat + Math.Cos(from.Y) * Math.Cos(to.Y) * sdlon * sdlon;
+        var latFrom = ToRadians(from.Y);
+        var latTo = ToRadians(to.Y);
+        var longFrom = ToRadians(from.X);
+        var longTo = ToRadians(to.X);
+        var dLat = latTo - latFrom;
+        var dLong = longTo - longFrom;
+        var sdLat = Math.Sin(dLat / 2);
+        var sdLong = Math.Sin(dLong / 2);
+        var q = sdLat * sdLat + Math.Cos(latFrom) * Math.Cos(latTo) * sdLong * sdLong;
         var distance = 2 * RadiusEarth * Math.Asin(Math.Sqrt(q));
 
         return distance;
+    }
+
+    private static double ToRadians(float angle)
+    {
+        return (Math.PI / 180) * angle;
     }
 
     private static City LineToCity(string line, Regex regex)
