@@ -12,6 +12,22 @@ public class Day3
         var data = File.ReadAllLines("Knowit\\Data\\Day3Input.txt")[0].ToList();
         //var data = "JJJJJNNJJNNJJJJJ".ToList();
         new Day3().Run(data);
+        var numbers = new List<int>();
+        var highestSoFar = new Tuple<int, int>(0, 0);
+        for (int i = 0; i < data.Count; i++)
+        {
+            var value = data[i] == 'J' ? 1 : -1;
+            numbers.Add(0);
+            for (var j = 0; j < numbers.Count; j++)
+            {
+                numbers[j] += value;
+                if (numbers[j] == 0 && numbers.Count - j > highestSoFar.Item1)
+                {
+                    highestSoFar = new(numbers.Count - j, j);
+                }
+            }
+        }
+        Console.WriteLine($"Alternative result {highestSoFar}");
     }
 
     public void Run(List<char> data)
