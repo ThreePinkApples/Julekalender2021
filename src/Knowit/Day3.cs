@@ -3,7 +3,7 @@ public class Day3
 {
     public static void Run()
     {
-        var data = File.ReadAllLines("Knowit\\Data\\Day3Input.txt")[0];
+        var data = File.ReadAllLines("Knowit\\Data\\Day3Input.txt")[0].ToList();
         //var data = "JJJJJNNJJNNJJJJJ";
         var currentNeighbourhoodIndex = 0;
         var currentNeighbourhoodSize = 0;
@@ -12,7 +12,7 @@ public class Day3
         var numberOfJInARow = 0;
         var numberOfNInARow = 0;
         var balance = 0;
-        for (int index = 0; index < data.Length; index++)
+        for (int index = 0; index < data.Count(); index++)
         {
             if (data[index] == 'J')
             {
@@ -76,7 +76,7 @@ public class Day3
             }
             if (numberOfNInARow == numberOfJInARow)
             {
-                var next = index + 1 < data.Length ? data[index + 1] : '0';
+                var next = index + 1 < data.Count() ? data[index + 1] : '0';
                 if (data[index] == next && next == data[currentNeighbourhoodIndex] && balance != 0)
                 {
                     // The next house will break the pattern, move the index
