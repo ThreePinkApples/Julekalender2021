@@ -23,15 +23,15 @@ public class Day2
         var totalDistance = 0f;
         while (cities.Count > 0)
         {
-            var nextCity = cities.OrderBy(c => Vector2.Distance(currentPosition, c.Position2)).First();
+            var nextCity = cities.OrderBy(c => Haversine(currentPosition, c.Position2)).First();
             cities.Remove(nextCity);
-            var distance = Vector2.Distance(currentPosition, nextCity.Position2);
+            var distance = Haversine(currentPosition, nextCity.Position2);
             // 180 is diameter I guess, so Raidus * 2?
-            totalDistance += (distance / 180) * RadiusEarth * 2;
+            totalDistance += (float)distance;
             currentPosition = nextCity.Position2;
         }
         // Back to the north pole
-        totalDistance += Vector2.Distance(currentPosition, start);
+        totalDistance += (float)Haversine(currentPosition, start);
         currentPosition = start;
         Console.WriteLine($"Total Vector2 distance {totalDistance}");
     }
@@ -54,6 +54,16 @@ public class Day2
         totalDistance += Vector3.Distance(currentPosition, start);
         currentPosition = start;
         Console.WriteLine($"Total Vector3 distance {totalDistance}");
+    }
+
+    private static double Haversine(Vector2 from, Vector2 to)
+    {
+        var sdlat = Math.Sin((to.Y - from.Y) / 2);
+        var sdlon = Math.Sin((to.X - from.X) / 2);
+        var q = sdlat * sdlat + Math.Cos(from.Y) * Math.Cos(to.Y) * sdlon * sdlon;
+        var distance = 2 * RadiusEarth * Math.Asin(Math.Sqrt(q));
+
+        return distance;
     }
 
     private static City LineToCity(string line, Regex regex)
@@ -85,12 +95,16 @@ public class Day2
         public string Name { get; set; }
         public Vector3 Position3 { get; set; }
         public Vector2 Position2 { get; set; }
+        public float Longitude { get; set; }
+        public float Latitude { get; set; }
 
         public City(string name, Vector3 position3, Vector2 position2)
         {
             Name = name;
             Position3 = position3;
             Position2 = position2;
+            Longitude = position2.X;
+            Latitude = position2.Y;
         }
     }
 }
