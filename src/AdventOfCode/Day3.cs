@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdventCalendar2021.AdventOfCode;
+﻿namespace AdventCalendar2021.AdventOfCode;
 public class Day3
 {
     public static void Run()
