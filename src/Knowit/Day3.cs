@@ -76,7 +76,7 @@ public class Day3
                     // move the index to the start of the Ns
                     currentNeighbourhoodIndex = index - otherCounter;
                     currentNeighbourhoodSize = otherCounter;
-                    balance = otherCounter * sign;
+                    balance = otherCounter * -sign;
                 }
             }
             counter = 0;
