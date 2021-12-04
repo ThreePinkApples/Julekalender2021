@@ -31,21 +31,20 @@ public class Day4
             }
         }
         Boards.Add(currentBoard);
-        int winnerNumber = 0;
-        BingoBoard? winner = null;
+        List<Tuple<int, BingoBoard>> winners = new();
         foreach (var number in numbers)
         {
             Boards.ForEach(b => b.MarkBoard(number));
-            winner = Boards.FirstOrDefault(b => b.HasBingo());
-            if (winner != null)
-            {
-                winnerNumber = number;
-                break;
-            }
+            var newWinners = Boards.Where(b => b.HasBingo()).ToList();
+            Boards.RemoveAll(b => newWinners.Contains(b));
+            newWinners.ForEach(w => winners.Add(new(number, w)));
         }
-        int finalScore = winner.GetScore() * winnerNumber;
-        Console.WriteLine($"Last number: {winnerNumber}\nWinner Board: \n{winner.ToString()}");
-        Console.WriteLine($"AdventOfCode Day 4 Part 1 {finalScore}");
+        var (firstWinnerNumber, firstWinner) = winners.First();
+        var (lastWinnerNumber, lastWinner) = winners.Last();
+        Console.WriteLine($"First winner number: {firstWinnerNumber}\nFirst winner Board: \n{firstWinner.ToString()}\n");
+        Console.WriteLine($"Last winner number: {lastWinnerNumber}\nLast winner Board: \n{lastWinner.ToString()}\n");
+        Console.WriteLine($"AdventOfCode Day 4 Part 1 {firstWinner.GetScore() * firstWinnerNumber}");
+        Console.WriteLine($"AdventOfCode Day 4 Part 2 {lastWinner.GetScore() * lastWinnerNumber}");
     }
 
     internal class BingoBoard
