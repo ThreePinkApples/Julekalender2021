@@ -14,13 +14,13 @@ public class Day4
             if (up)
             {
                 Y++;
-                if (Y % 15 != 0)
+                if (Y % 3 == 0 && Y % 3 != 0)
                     up = !up;
             }
             else
             {
                 X++;
-                if (X % 15 != 0)
+                if (X % 5 == 0 && X % 3 != 0)
                     up = !up;
             }
 
