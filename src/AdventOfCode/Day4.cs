@@ -1,4 +1,6 @@
-﻿namespace AdventCalendar2021.AdventOfCode;
+﻿using System.Text;
+
+namespace AdventCalendar2021.AdventOfCode;
 public class Day4
 {
     public static void Run()
@@ -13,7 +15,7 @@ public class Day4
     public void Run(List<string> input)
     {
         numbers = input[0].Split(',').Select(int.Parse).ToArray();
-        input.Remove(input[0]);
+        input.RemoveAt(0);
         BingoBoard? currentBoard = null;
         foreach (var line in input)
         {
@@ -25,21 +27,24 @@ public class Day4
             }
             else
             {
-                currentBoard.AddRow(line.Split(' ').Where(l => l.Trim() != "").Select(l => int.Parse(l.Trim())).ToList());
+                currentBoard.AddRow(line.Split(' ').Where(l => l.Trim() != "").Select(int.Parse).ToList());
             }
         }
         Boards.Add(currentBoard);
-        int finalScore = 0;
+        int winnerNumber = 0;
+        BingoBoard? winner = null;
         foreach (var number in numbers)
         {
             Boards.ForEach(b => b.MarkBoard(number));
-            var winner = Boards.FirstOrDefault(b => b.HasBingo());
+            winner = Boards.FirstOrDefault(b => b.HasBingo());
             if (winner != null)
             {
-                finalScore = winner.GetScore() * number;
+                winnerNumber = number;
                 break;
             }
         }
+        int finalScore = winner.GetScore() * winnerNumber;
+        Console.WriteLine($"Last number: {winnerNumber}\nWinner Board: \n{winner.ToString()}");
         Console.WriteLine($"AdventOfCode Day 4 Part 1 {finalScore}");
     }
 
@@ -48,6 +53,23 @@ public class Day4
         int BoardSize = 5;
         List<List<int>> Board = new List<List<int>>();
         List<List<bool>> Marked = new List<List<bool>>();
+
+        public string ToString()
+        {
+            var builder = new StringBuilder();
+            for (int i = 0; i < BoardSize; i++)
+            {
+                for (int j = 0; j < BoardSize; j++)
+                {
+                    if (Marked[i][j])
+                        builder.Append($"{Board[i][j]}* ");
+                    else
+                        builder.Append($"{Board[i][j]} ");
+                }
+                builder.Append("\n");
+            }
+            return builder.ToString();
+        }
 
         public void AddRow(List<int> row)
         {
@@ -64,7 +86,7 @@ public class Day4
             for (int rowIndex = 0; rowIndex < BoardSize; rowIndex++)
             {
                 var columnIndex = Board[rowIndex].FindIndex(n => n == number);
-                if (columnIndex > 0)
+                if (columnIndex >= 0)
                     Marked[rowIndex][columnIndex] = true;
             }
         }
