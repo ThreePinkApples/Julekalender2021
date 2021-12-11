@@ -92,46 +92,46 @@ public class Day8
 
         public void MapWires()
         {
-            foreach (var patternWithUniqueLength in Patterns.Where(p => UniqueLengths.Contains(p.Length)))
+            foreach (var pattern in Patterns.Where(p => UniqueLengths.Contains(p.Length)))
             {
                 // 1, 4, 7, or 8
-                var number = WireMappingReference.Where(w => w.Value.Count == patternWithUniqueLength.Length).Select(w => w.Key).Single();
-                AddWireMapping(number, patternWithUniqueLength);
+                var number = WireMappingReference.Where(w => w.Value.Count == pattern.Length).Select(w => w.Key).Single();
+                AddWireMapping(number, pattern);
             }
-            foreach (var patternWithoutUniqueLength in Patterns.Where(p => p.Length == 5))
+            foreach (var pattern in Patterns.Where(p => p.Length == 5))
             {
                 // 2, 3, or 5
-                if (WireMapping[1].All(wire => patternWithoutUniqueLength.Contains(wire)))
+                if (WireMapping[1].All(wire => pattern.Contains(wire)))
                 {
                     // All wires for the number 1, are also in 3, but not 2 or 5
-                    AddWireMapping(3, patternWithoutUniqueLength);
+                    AddWireMapping(3, pattern);
                 }
-                else if (patternWithoutUniqueLength.Count(wire => WireMapping[4].Contains(wire)) == 3)
+                else if (pattern.Count(wire => WireMapping[4].Contains(wire)) == 3)
                 {
                     // 4 and 5 have 3 wires in common, while 4 and 2 have only 2 in common
-                    AddWireMapping(5, patternWithoutUniqueLength);
+                    AddWireMapping(5, pattern);
                 }
                 else
                 {
-                    AddWireMapping(2, patternWithoutUniqueLength);
+                    AddWireMapping(2, pattern);
                 }
             }
-            foreach (var patternWithoutUniqueLength in Patterns.Where(p => p.Length == 6))
+            foreach (var pattern in Patterns.Where(p => p.Length == 6))
             {
                 // 0, 6, or 9
-                if (!WireMapping[1].All(wire => patternWithoutUniqueLength.Contains(wire)))
+                if (!WireMapping[1].All(wire => pattern.Contains(wire)))
                 {
                     // 6 does not contain all wires that are in 1, but 0 and 9 do
-                    AddWireMapping(6, patternWithoutUniqueLength);
+                    AddWireMapping(6, pattern);
                 }
-                else if (WireMapping[3].All(wire => patternWithoutUniqueLength.Contains(wire)))
+                else if (WireMapping[3].All(wire => pattern.Contains(wire)))
                 {
                     // All wires for the number 3, are also in 9, but not in 0
-                    AddWireMapping(9, patternWithoutUniqueLength);
+                    AddWireMapping(9, pattern);
                 }
                 else
                 {
-                    AddWireMapping(0, patternWithoutUniqueLength);
+                    AddWireMapping(0, pattern);
                 }
             }
         }
