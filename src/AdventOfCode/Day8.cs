@@ -1,7 +1,7 @@
 ﻿namespace AdventCalendar2021.AdventOfCode;
 public class Day8
 {
-    private readonly Dictionary<int, List<char>> WireMapping = new()
+    private static readonly Dictionary<int, List<char>> WireMapping = new()
     {
         { 0, new() { 'a', 'b', 'c', 'e', 'f', 'g' } },
         { 1, new() { 'c', 'f' } },
@@ -24,7 +24,19 @@ public class Day8
 
     private static void Part1(List<DisplaySignals> input)
     {
-        Console.WriteLine($"AdventOfCode Day 8 Part 1 result: ");
+        var lookingForLength = new List<int>
+        {
+            WireMapping[1].Count, WireMapping[4].Count, WireMapping[7].Count, WireMapping[8].Count
+        };
+        var numberOf1478 = 0;
+        foreach (var displaySignal in input)
+        {
+            foreach (var outputSignal in displaySignal.Outputs)
+            {
+                if (lookingForLength.Contains(outputSignal.Count())) numberOf1478++;
+            }
+        }
+        Console.WriteLine($"AdventOfCode Day 8 Part 1 result: {numberOf1478}");
     }
 
     private static void Part2(List<DisplaySignals> input)
@@ -34,10 +46,10 @@ public class Day8
 
     internal class DisplaySignals
     {
-        public string[] Patterns { get; set; }
+        private string[] Patterns { get; set; }
         public string[] Outputs { get; set; }
 
-        public DisplaySignals(string patternString, string outputStrings)
+        private DisplaySignals(string patternString, string outputStrings)
         {
             Patterns = patternString.Trim().Split(" ").ToArray();
             Outputs = outputStrings.Trim().Split(" ").ToArray();
