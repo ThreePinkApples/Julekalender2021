@@ -103,7 +103,7 @@ public class Day8
                 // 2, 3, or 5
                 if (WireMapping[1].All(wire => patternWithoutUniqueLength.Contains(wire)))
                 {
-                    // All wires for the number 1, is also in 3, but not 2 or 5
+                    // All wires for the number 1, are also in 3, but not 2 or 5
                     AddWireMapping(3, patternWithoutUniqueLength);
                 }
                 else if (patternWithoutUniqueLength.Count(wire => WireMapping[4].Contains(wire)) == 3)
@@ -126,7 +126,7 @@ public class Day8
                 }
                 else if (WireMapping[3].All(wire => patternWithoutUniqueLength.Contains(wire)))
                 {
-                    // All wires for the number 3, is also in 9, but not in 0
+                    // All wires for the number 3, are also in 9, but not in 0
                     AddWireMapping(9, patternWithoutUniqueLength);
                 }
                 else
