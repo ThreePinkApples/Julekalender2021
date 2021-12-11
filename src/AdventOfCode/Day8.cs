@@ -1,7 +1,7 @@
 ﻿namespace AdventCalendar2021.AdventOfCode;
 public class Day8
 {
-    private static readonly Dictionary<int, List<char>> InitialWireMapping = new()
+    private static readonly Dictionary<int, List<char>> WireMappingReference = new()
     {
         { 0, new() { 'a', 'b', 'c', 'e', 'f', 'g' } },
         { 1, new() { 'c', 'f' } },
@@ -95,7 +95,7 @@ public class Day8
             foreach (var patternWithUniqueLength in Patterns.Where(p => UniqueLengths.Contains(p.Length)))
             {
                 // 1, 4, 7, or 8
-                var number = InitialWireMapping.Where(w => w.Value.Count == patternWithUniqueLength.Length).Select(w => w.Key).Single();
+                var number = WireMappingReference.Where(w => w.Value.Count == patternWithUniqueLength.Length).Select(w => w.Key).Single();
                 AddWireMapping(number, patternWithUniqueLength);
             }
             foreach (var patternWithoutUniqueLength in Patterns.Where(p => p.Length == 5))
