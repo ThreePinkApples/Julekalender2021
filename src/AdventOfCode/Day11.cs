@@ -17,12 +17,20 @@ public class Day11
     public void Part1()
     {
         var numberOfFlashes = 0;
-        for (int step = 0; step < 100; step++)
+        var allFlashedStep = 0;
+        for (int step = 1; step <= 500; step++)
         {
             IncreaseEnergy();
-            numberOfFlashes += Flash();
+            var stepFlashes = Flash();
+            numberOfFlashes += stepFlashes;
+            if (stepFlashes == Octopi.Count * Octopi[0].Count)
+            {
+                allFlashedStep = step;
+                break;
+            }
         }
         Console.WriteLine($"AdventOfCode Day 11 Part 1: {numberOfFlashes}");
+        Console.WriteLine($"AdventOfCode Day 11 Part 2 {allFlashedStep}");
     }
 
     private void IncreaseEnergy()
