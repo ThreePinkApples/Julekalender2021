@@ -23,6 +23,7 @@ public class Day13
             paper[dot.X, dot.Y] = true;
         }
         Part1(folds.ToList(), paper);
+        Part2(folds.ToList(), paper);
     }
 
     private static void Part1(List<FoldInstruction> folds, bool[,] paper)
@@ -32,9 +33,27 @@ public class Day13
         Console.WriteLine($"AdventOfCode Day 13 Part 1: {result}");
     }
 
-    private static void Part2()
+    private static void Part2(List<FoldInstruction> folds, bool[,] paper)
     {
-        Console.WriteLine($"AdventOfCode Day 13 Part 2: ");
+        var foldedPaper = paper;
+        foreach (var fold in folds)
+        {
+            foldedPaper = FoldPaper(fold, foldedPaper);
+        }
+        Console.WriteLine($"AdventOfCode Day 13 Part 2:");
+        PrintPaper(foldedPaper);
+    }
+
+    private static void PrintPaper(bool[,] paper)
+    {
+        for (int Y = 0; Y < paper.GetLength(1); Y++)
+        {
+            for (int X = 0; X < paper.GetLength(0); X++)
+            {
+                Console.Write(paper[X, Y] ? " # " : " . ");
+            }
+            Console.Write("\n");
+        }
     }
 
     private static bool[,] FoldPaper(FoldInstruction foldInstruction, bool[,] paper)
