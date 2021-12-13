@@ -28,7 +28,7 @@ public class Day13
     private static void Part1(List<FoldInstruction> folds, bool[,] paper)
     {
         var foldedPaper = FoldPaper(folds.First(), paper);
-        var result = foldedPaper.Cast<bool>().Count(x => !x);
+        var result = foldedPaper.Cast<bool>().Count(x => x);
         Console.WriteLine($"AdventOfCode Day 13 Part 1: {result}");
     }
 
